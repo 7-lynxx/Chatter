@@ -1,11 +1,16 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
+import NotificationBadge from "./NotificationBadge";
 
 const Navigation = () => {
   const { user, loading, signOutUser } = useAuth();
+
+  const messageCount = 5 ;
+  const notificationCount = 6;
 
   const handleLogout = async () => {
     try {
@@ -27,17 +32,41 @@ const Navigation = () => {
     >
       <Box>
         <Link href="/" passHref>
-          CHATTER
+         <Button as="a" variant="ghost"> Home </Button>
         </Link>
-      </Box>
+     
+        <Link href="/explore" passHref>
+         <Button as="a" variant="ghost"> Explore </Button>
+        </Link>
+     
+        <Link href="/create" passHref>
+         <Button as="a" variant="ghost"> Create </Button>
+        </Link>
+    
+        {/* <Link href="/messages" passHref>
+         <Button as="a" variant="ghost">  </Button>
+        </Link>
+        <Link href="/notifications" passHref>
+         <Button as="a" variant="ghost"> Home </Button>
+        </Link> */}
+   
+        <Link href="/settings" passHref>
+         <Button as="a" variant="ghost"> <SettingsIcon/> </Button>
+        </Link>
+     
+      
+        <Link href="/help" passHref>
+         <Button as="a" variant="ghost"> Help </Button>
+        </Link>
+      
        
-      <Box>
+      
         <Link href="/login" passHref>
-          LogIn
+        <Button as="a" variant="ghost"> LogIn </Button>
         </Link>
-      </Box>
+  
 
-      <Box>
+      
         {!loading && user ? (
           <>
             <Link href="/profile"> Profile </Link>
@@ -49,10 +78,12 @@ const Navigation = () => {
         ) : (
           <>
             <Link href="/register" passHref>
-              Register
+            <Button as="a" variant="ghost"> Register </Button>
             </Link>
           </>
         )}
+        <Spacer/>
+        <NotificationBadge messageCount={messageCount} notificationCount={notificationCount}/>
       </Box>
     </Flex>
   );
