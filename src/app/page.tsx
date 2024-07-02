@@ -1,6 +1,7 @@
 
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -8,8 +9,29 @@ export default function Home() {
       <Box p={4}>
       <Text fontSize="xl" fontWeight="bold">
 
-          Loading...
+          Welcome to Chatter...
       </Text>
+      {/* <nav>
+        <List>
+          <ListItem>
+            <Link href="/login">
+             Log in 
+            </Link>
+          </ListItem>
+
+          <ListItem>
+            <Link href='/register'>
+             Register
+            </Link>
+          </ListItem>
+          <ListItem>
+
+            <Link href="/profile">
+            profile
+            </Link>
+          </ListItem>
+        </List>
+      </nav> */}
       
       </Box>
     </main>

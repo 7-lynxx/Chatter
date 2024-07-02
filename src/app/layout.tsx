@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ChakraWrapper } from "@/components/ChakraWrapper";
 import ColorModeToggle from "@/components/ColorModeToggle";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Navigation from "@/components/Navigation";
 
 
 
@@ -21,10 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <AuthProvider>
+
         <ChakraWrapper>
           <ColorModeToggle/>
+          <Navigation/>
           { children }
         </ChakraWrapper>
+        </AuthProvider>
           
         
         </body>
