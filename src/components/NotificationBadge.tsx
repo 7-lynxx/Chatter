@@ -20,6 +20,8 @@ const NotificationBadge = ({ messageCount, notificationCount }: NotifcationBadge
                 top='-1'
                 right='-1'
                 fontSize='0.6em'
+                fontWeight='bold'
+                bg='black'
                 colorScheme="red"
                 borderRadius='full'>
                     {messageCount}
@@ -35,6 +37,7 @@ const NotificationBadge = ({ messageCount, notificationCount }: NotifcationBadge
     top='-1'
     right='-1'
     fontSize='0.6em'
+   bg='black'
     colorScheme="red"
     borderRadius='full'>
         {notificationCount}

@@ -1,9 +1,19 @@
 
+
 import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+
+  const mdContent = `#Hello, Markdown!
+  
+  This is a **sample** Markdown Content using \`MarkdownRenderer\`.
+
+  \`\`\`javascript
+  console.log("Hello World");
+  \`\`\`
+  `;
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Box p={4}>
@@ -32,7 +42,7 @@ export default function Home() {
           </ListItem>
         </List>
       </nav> */}
-      
+    
       </Box>
     </main>
   );

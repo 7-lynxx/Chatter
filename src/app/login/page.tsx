@@ -1,8 +1,10 @@
 'use client';
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightElement } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, HStack, IconButton, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightElement, Text, VStack } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { signInWithFacebook, signInWithGithub, signInWithGoogle } from "@/contexts/lib/auth";
 
 const LoginForm = ()=> {
     const { signIn } = useAuth();
@@ -32,10 +34,12 @@ const LoginForm = ()=> {
     };
 
     return (
+        <Box>
         <Box as="form" onSubmit={handleSubmit}>
             <FormControl id="email" mb={4}>
             <InputGroup>
             <FormLabel> Email </FormLabel>
+            
             <InputRightElement pointerEvents="none">
             <EmailIcon color="grey.300"/>
             </InputRightElement>
@@ -67,6 +71,49 @@ const LoginForm = ()=> {
 
             <Button type="submit"> Sign In </Button>
         </Box>
+        <HStack justifyContent="center" mb={4}>
+            <VStack>
+
+        <IconButton
+          borderRadius="full"
+          colorScheme="gray"
+          color="gray.800"
+          
+          aria-label="Sign up with Github"
+          icon={<FaGithub />}
+          onClick={signInWithGithub}
+          />
+          <Text fontSize="xs">Github</Text>
+          </VStack>
+
+          <VStack>
+
+
+        <IconButton
+          borderRadius="full"
+          colorScheme="blue"
+          color="white"
+          aria-label="Sign up with Google"
+          icon={<FaGoogle />}
+          onClick={signInWithGoogle}
+          />
+        <Text fontSize="xs">Google</Text>
+          </VStack>
+
+        <VStack>
+
+        <IconButton
+          borderRadius="full"
+          colorScheme="blue"
+          color="white"
+          aria-label="Sign up with Faceboook"
+          icon={<FaFacebook />}
+          onClick={signInWithFacebook}
+          />
+        <Text fontSize="xs">Facebook</Text>
+          </VStack>
+      </HStack>
+            </Box>
     );
 };
 

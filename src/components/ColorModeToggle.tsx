@@ -10,6 +10,10 @@ const ColorModeToggle = () => {
     return (
         <IconButton 
         aria-label="Toggle color mode"
+        h={7}
+        w={3}
+        ml={2}
+        mr={2}
         icon = { colorMode === "light" ? <SunIcon/> : <MoonIcon/>}
         onClick={toggleColorMode}
         position="fixed"
