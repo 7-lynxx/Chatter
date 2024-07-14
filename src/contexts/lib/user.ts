@@ -1,13 +1,14 @@
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
 import { firestore } from "./firebase"
+import { User } from "firebase/auth";
 
 
 
-interface customUser{
-    uid: string;
-    email: string;
-    displayName?: string;
-    photoURL?: string;
+interface customUser extends User {
+    // uid: string;
+    // email: string;
+    // displayName?: string;
+    // photoURL?: string;
     preferences?: string[];
 }
 

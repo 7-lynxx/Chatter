@@ -9,6 +9,7 @@ type FeedItem = {
     title: string;
     content: string;
     createdAt: Date;
+    description?: string;
 }
 
 const useSpecializedFeed = (userId: string) => {

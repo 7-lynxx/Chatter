@@ -5,7 +5,16 @@ import { firestore } from "../lib/firebase";
 
 interface Post {
     id: string;
-    [key: string] : any;
+    title: string;
+    description?: string;
+    imageUrl?: string;
+    content: string;
+    authorId: string;
+    createdAt: {
+        seconds: number;
+        nanoseconds: number;
+
+    };
 }
 
 const usePreferenceFeed = (userId: string, preferences: string[]) => {

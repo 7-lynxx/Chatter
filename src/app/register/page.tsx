@@ -29,7 +29,7 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {

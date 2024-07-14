@@ -10,7 +10,7 @@ const handleAuthProviderSignIn = async (provider: AuthProvider) => {
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const credential = GoogleAuthProvider.credentialFromResult(result);
         const accessToken = credential?.accessToken;
         await saveUserData(user);
         console.log('logged in user', user);
