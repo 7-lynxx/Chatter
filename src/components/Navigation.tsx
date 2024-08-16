@@ -82,9 +82,9 @@ gap={8} p={4}>
     </Link>
  
   
-    <Link href="/help" passHref>
+    {/* <Link href="/help" passHref>
      <Box  onClick={onClose} > Help </Box>
-    </Link>
+    </Link> */}
   
    
   
