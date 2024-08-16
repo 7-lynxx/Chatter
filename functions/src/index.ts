@@ -16,7 +16,7 @@
 //   response.send("Hello from Firebase!");
 // });
 
-import * as functions from "firebase-functions";
+import functions from "firebase-functions";
 import axios from "axios";
 import cors from "cors";
 import * as admin from "firebase-admin";
