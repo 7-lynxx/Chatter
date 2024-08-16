@@ -1,19 +1,25 @@
 'use client';
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Box, Button, FormControl, FormLabel, HStack, IconButton, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightElement, Text, VStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, AlertTitle, Box, Button, CloseButton, FormControl, FormLabel, HStack, IconButton, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightElement, Text, VStack } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { signInWithFacebook, signInWithGithub, signInWithGoogle } from "@/contexts/lib/auth";
+import { auth } from "@/contexts/lib/firebase";
 
 const LoginForm = ()=> {
     const { signIn } = useAuth();
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
+    const user = auth.currentUser;
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        
         try{
+           
+
             await signIn(email, password);
         }catch (error){
             console.error('failed to sign in', error);

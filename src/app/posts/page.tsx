@@ -1,158 +1,89 @@
 'use client'
 
-import usePreferenceFeed from "@/contexts/hooks/usePreferencesFeed";
-import { auth, firestore } from "@/contexts/lib/firebase";
-// import { fetchUserPreferences } from "@/contexts/lib/user";
-import { Box, Button, Divider, HStack, Image, Spinner, Text, VStack } from "@chakra-ui/react";
-import { getAuth } from "firebase/auth";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react";
+import { fetchPosts, getPersonalizedFeed, getPostsByTags, sanitizeHtml } from '@/contexts/lib/posts';
+import { Box, Button, Text, ButtonGroup } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { auth } from '@/contexts/lib/firebase'; // Import auth to get current user's ID
 
+interface Post {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  authorId: string;
+  createdAt: Date;
+}
 
-type Post ={
-    id: string;
-    title: string;
-    description?: string;
-    imageUrl?: string;
-    content: string;
-    authorId: string;
-    createdAt: {
-        seconds: number;
-        nanoseconds: number;
+const Posts = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [view, setView] = useState<'all' | 'personalized'>('all');
+  const router = useRouter();
 
-    };
-};
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        let fetchedPosts: Post[] = [];
 
-const Posts: React.FC = () => {
-    const router = useRouter();
-    const [ feed, setFeed ] = useState<Post[]>([]);
-    // toggling
-    const [ loading, setLoading ] = useState(true);
-    const [ activeTab, setActiveTab ] = useState<'personalized' | 'all'>('personalized');
-    const user = auth.currentUser;
-    const userId = user? user.uid : '';
- 
-    const [ preferences, setPreferences ] = useState<string[]>([]);
+        if (view === 'all') {
+          fetchedPosts = await fetchPosts();
+        } else {
+          const user = auth.currentUser;
+          if (user) {
+            fetchedPosts = await getPersonalizedFeed(user.uid);
+          }
+        }
 
-    useEffect(() => {
-        const fetchFeed = async () => {
-            const feedQuery = query(collection(firestore, 'posts'), orderBy('createdAt', 'desc'));
-
-            const querySnapshot = await getDocs(feedQuery);
-
-            const allPosts: Post[] = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...(doc.data() as Omit<Post, 'id'>)
-            }));
-
-            setFeed(allPosts);
-            setLoading(false);
-
-        };
-
-        // const fetchPreferences = async ()=> {
-        //     if (user){
-        //         const userPreferences = await fetchUserPreferences(userId);
-        //         setPreferences(userPreferences)
-        //     }
-        // };
-
-        fetchFeed();
-        // fetchPreferences();
-    }, [user, userId]);
-
-    const handleToggleFeed = (tab: 'personalized' | 'all') => {
-        setActiveTab(tab);
-
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error('Failed to fetch posts', error);
+      }
     };
 
-    const preferencesFeed = usePreferenceFeed(userId, preferences);
+    loadPosts();
+  }, [view]);
 
-    if(loading){
-        return (
-            <Box textAlign='center' mt={10}>
-                <Spinner/>
-            </Box>
-        );}
+  const handlePostClick = (postId: string) => {
+    router.push(`/posts/${postId}`);
+  };
 
-        const postSummary = (post: Post) => (
-            <Box  key={post.id}
-            p={5}
-            shadow='md'
-            borderWidth='1px'
-            width='100%'>
-                {post.imageUrl && <Image src={post.imageUrl} alt={post.title}/> 
-                }
-                <Text fontWeight='bold'> { post.title }</Text>
-                <Text mt={2}> {post.title} </Text>
-                <Button mt={4} onClick={() => router.push(`/posts/${post.id}`)}> View Post </Button>
-            </Box>);
-
-        return (
-            <VStack spacing={4} mt={10} width='100%'
-            maxW='3xl' mx='auto'>
-                <HStack spacing={8}>
-
-                    <Button variant='ghost' 
-                    onClick={() => {handleToggleFeed('personalized')}}
-                    position='relative'
-                    // _after={{
-                    //     content: '""',
-                    //     position: 'absolute',
-                    //     width: '100%',
-                    //     height: '2px',
-                    //     botom: '-2px',
-                    //     left: 0,
-                    //     bg: activeTab === 'personalized' ? 'teal.500' : 'transparent',
-                    //     transition: 'background-color 0.3s ease',
-
-                    // }}
-                    >
-                        For You
-                    </Button>
-                    
-                    <Button variant='ghost' 
-                    onClick={() => {handleToggleFeed('all')}}
-                    position='relative'
-                   
-                    >
-                       All Posts
-                    </Button>
-                    </HStack>
-                    <Divider mt={4}/>
-
-                    {activeTab === 'personalized' ? (
-                        <Box>
-                            <Text fontSize ="2xl" fontWeight='bold'
-                            >
-                             Recommended for you
-                            </Text>
-                            {preferencesFeed.map(postSummary)}
-                        </Box>
-                    ): (
-                        <Box>
-                             <Text fontSize ="2xl" fontWeight='bold'
-                            >
-                             All Posts
-                            </Text>
-                            {feed.map(postSummary)}
-                                    </Box>
-
-
-                            
-                    )}
-
-             
-            </VStack>
-        );
+  const handleTagFilter = async (tag: string) => {
+    try {
+      const filteredPosts = await getPostsByTags([tag]); // Assuming single tag filter for simplicity
+      setPosts(filteredPosts);
+    } catch (error) {
+      console.error('Failed to filter posts', error);
+    }
+  };
   
-        
+  return (
+    <Box>
+      <ButtonGroup mb={4} spacing={4}>
+        <Button
+          colorScheme={view === 'all' ? 'teal' : 'gray'}
+          onClick={() => setView('all')}
+        >
+          All Posts
+        </Button>
+        <Button
+          colorScheme={view === 'personalized' ? 'teal' : 'gray'}
+          onClick={() => setView('personalized')}
+        >
+          For You
+        </Button>
+      </ButtonGroup>
 
-   
-    
-
-
+      {posts.map((post) => (
+        <Box key={post.id} mb={4} p={4} borderWidth={1} borderRadius="md">
+          <Text fontWeight="bold">{post.title}</Text>
+          <Text mt={2}>{post.tags.join(', ')}</Text>
+          <Button mt={2} onClick={() => handlePostClick(post.id)}>
+            View Full Content
+          </Button>
+        </Box>
+      ))}
+    </Box>
+  );
 };
 
 export default Posts;

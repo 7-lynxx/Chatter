@@ -45,7 +45,7 @@ const theme: ThemeOverride = extendTheme({
     },
     colors: {
         dark: {
-            background:"#1E1E1E",
+            background:"gray",
             surface: "#252526",
             card: "#2D2D2D",
             primaryText: "#D4D4D4",

@@ -20,18 +20,30 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 const RegisterForm = () => {
+  const router = useRouter();
   const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSignIn = async (providerSignIn: ()=> Promise<void>) => {
+    try{
+      await providerSignIn();
+      router.push('/SelectTags')
+    }catch(error){
+      console.error('failed to sign in ', error)
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
+    e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/SelectTags')
     } catch (error) {
       console.error("failed to register", error);
     }
@@ -96,7 +108,8 @@ const RegisterForm = () => {
           
           aria-label="Sign up with Github"
           icon={<FaGithub />}
-          onClick={signInWithGithub}
+          onClick={signInWithGithub
+    }
         />
         <IconButton
           borderRadius="full"
@@ -104,7 +117,8 @@ const RegisterForm = () => {
           color="white"
           aria-label="Sign up with Google"
           icon={<FaGoogle />}
-          onClick={signInWithGoogle}
+          onClick={ signInWithGoogle
+          }
         />
         <IconButton
           borderRadius="full"
@@ -112,7 +126,9 @@ const RegisterForm = () => {
           color="white"
           aria-label="Sign up with Faceboook"
           icon={<FaFacebook />}
-          onClick={signInWithFacebook}
+          onClick= {
+            signInWithFacebook
+         }
         />
       </HStack>
     </Box>

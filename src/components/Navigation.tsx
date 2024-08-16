@@ -41,7 +41,7 @@ gap={8} p={4}>
      <Box   onClick={onClose} > Home </Box>
     </Link>
  
-    <Link href="/explore" passHref>
+    <Link href="/posts" passHref>
      <Box  onClick={onClose} > Explore </Box>
     </Link>
  
@@ -66,7 +66,7 @@ gap={8} p={4}>
       </>
     )}
     
-    <Link href='/create' passHref>
+    <Link href='/crate' passHref>
      <Box   onClick={onClose}> Create </Box>
     </Link>
 
@@ -96,7 +96,7 @@ gap={8} p={4}>
   );
 
   return (
-    <Box bg={bgColor} px={4} boxShadow='sm'>
+    <Box bg={bgColor} px={4} boxShadow='sm' mb='10rem'>
     <Flex h={16}
     
       // bg="teal.500"

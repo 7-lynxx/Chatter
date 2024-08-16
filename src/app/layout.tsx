@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -5,6 +6,12 @@ import { ChakraWrapper } from "@/components/ChakraWrapper";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Navigation from "@/components/Navigation";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import InitialLoader from "@/components/InitialLoader";
+import RouteLoader from "@/components/RoutingLoader";
+import ClientLayout from "@/components/ClientLayout";
+import Script from "next/script";
 
 
 
@@ -20,16 +27,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-
+        <ClientLayout>
         <ChakraWrapper>
           <ColorModeToggle/>
-          <Navigation/>
+          <Navigation />
+        
+
+          
           { children }
         </ChakraWrapper>
+        </ClientLayout>
         </AuthProvider>
           
         

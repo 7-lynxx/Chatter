@@ -1,6 +1,6 @@
 'use client';
 import { ChakraProvider,cookieStorageManagerSSR, localStorageManager } from "@chakra-ui/react";
-import theme from "./styles/theme";
+import theme from "../app/theme";
 import { ReactNode } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 

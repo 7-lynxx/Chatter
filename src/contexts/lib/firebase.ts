@@ -1,9 +1,12 @@
 // initializing firebase
 
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { Analytics, getAnalytics } from "firebase/analytics";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import { Auth, getAuth } from "firebase/auth";
+import { Firestore, getFirestore } from "firebase/firestore";
+import { FirebaseStorage, getStorage } from 'firebase/storage'
+import 'firebase/functions'
+import { Functions, getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
       
@@ -18,9 +21,14 @@ const firebaseConfig = {
 
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const firestore = getFirestore(app);
-const analytics = getAnalytics(app);
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const auth: Auth = getAuth(app);
+const storage: FirebaseStorage = getStorage(app);
+const firestore: Firestore = getFirestore(app);
+const analytics: Analytics = getAnalytics(app);
 
-export { auth, firestore, analytics };
+const functions:Functions = getFunctions(app);
+
+
+
+export { auth, firestore, analytics, storage };
